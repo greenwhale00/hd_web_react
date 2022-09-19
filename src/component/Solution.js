@@ -17,10 +17,8 @@ const SOLUTION = [
 
 
 const Solution = () => {
-
     const [slideNum, setSlideNum] = useState(0);
     const SLIDE = useRef(null);
-
     return (
         <section className="Solution csc">
             <h2>클린 무빙 솔루션</h2>
@@ -28,14 +26,16 @@ const Solution = () => {
             <div className="container">
                 <Slider
                     centerMode={true}
-                    centerPadding={300}
+                    centerPadding={'300px'}
                     afterChange={index => setSlideNum(index)}
+                    arrows={false}
                     ref={SLIDE}
+                    className={'solution_slide'}
                 >
                     {
-                        SOLUTION.map(img => {
+                        SOLUTION.map((img, idx) => {
                             return (
-                                <figure>
+                                <figure key={img.id} className={slideNum === idx ? 'on' : ''}>
                                     <img src={process.env.PUBLIC_URL + "/assets/images/main_s0" + img.id + ".jpg"} alt="" />
                                 </figure>
                             )
@@ -44,19 +44,29 @@ const Solution = () => {
                 </Slider>
                 <div className="box">
                     <div className="content">
-                        <div className="tit">{SOLUTION[slideNum].content}</div>
+                        <div className='tit'>{SOLUTION[slideNum].content}</div>
                         <p>{SOLUTION[slideNum].description}</p>
-                        <a href={SOLUTION[slideNum].link} className="cbtn">자세히보기</a>
+                        <a href={SOLUTION[slideNum].link} className='cbtn'>자세히보기</a>
                     </div>
                     <div className="num">
                         0{slideNum + 1} <span>/ 0{SOLUTION.length}</span>
-                        {/* (SOLUTION.length>9 ? '0' : '') */}
-                    </div>
-                    <div className="arrows">
-                        <i className="xi-arrow-left" onClick={() => SLIDE.current.slickPrev}></i>
-                        <i className="xi-arrow-right" onClick={() => SLIDE.current.slickNext} ></i>
                     </div>
                 </div>
+                <div className="arrows">
+                    <i className='xi-arrow-left' onClick={() => SLIDE.current.slickPrev()}></i>
+                    <i className='xi-arrow-right' onClick={() => SLIDE.current.slickNext()}></i>
+                </div>
+                <ul className="dots">
+                    {
+                        SOLUTION.map((dot, idx) => <li
+                            key={dot.id}
+                            onClick={() => SLIDE.current.slickGoTo(idx)}
+                            className={slideNum === idx ? 'on' : ''}
+                        >
+                            {dot.id}
+                        </li>)
+                    }
+                </ul>
             </div>
         </section>
     )
